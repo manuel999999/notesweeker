@@ -22,8 +22,13 @@ struct NoteDetailView: View {
             VStack(spacing: 0) {
                 if let group {
                     List {
-                        ForEach(group.contents) { content in
+                        ForEach(Array(group.contents.enumerated()), id: \.element.id) { index, content in
                             row(for: content, in: group)
+                                .listRowBackground(
+                                    index.isMultiple(of: 2)
+                                        ? store.accentColor.baseRowColor
+                                        : store.accentColor.alternateRowColor
+                                )
                         }
                     }
 

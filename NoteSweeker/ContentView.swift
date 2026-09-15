@@ -49,6 +49,22 @@ struct ContentView: View {
                         Image(systemName: "textformat.size")
                     }
                     .help("Font Size")
+                    Menu {
+                        ForEach(NoteAccentColor.allCases) { colorOption in
+                            Button {
+                                store.accentColor = colorOption
+                            } label: {
+                                if store.accentColor == colorOption {
+                                    Label(colorOption.label, systemImage: "checkmark")
+                                } else {
+                                    Text(colorOption.label)
+                                }
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "paintpalette")
+                    }
+                    .help("List Color")
                 }
             }
             .alert("New Note", isPresented: $isPresentingAddAlert) {
@@ -95,7 +111,7 @@ struct ContentView: View {
 
     private var listView: some View {
         List {
-            ForEach(store.noteGroups) { group in
+            ForEach(Array(store.noteGroups.enumerated()), id: \.element.id) { index, group in
                 HStack {
                     Button {
                         selectedGroup = group
@@ -120,6 +136,9 @@ struct ContentView: View {
                     .buttonStyle(.plain)
                     .foregroundStyle(.red)
                 }
+                .listRowBackground(
+                    index.isMultiple(of: 2) ? store.accentColor.baseRowColor : store.accentColor.alternateRowColor
+                )
             }
         }
     }

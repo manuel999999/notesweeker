@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import SwiftUI
 
 enum NoteFontSize: CGFloat, CaseIterable, Identifiable {
     case small = 12
@@ -16,6 +17,37 @@ enum NoteFontSize: CGFloat, CaseIterable, Identifiable {
         case .large: return "Large"
         case .extraLarge: return "Extra Large"
         }
+    }
+}
+
+enum NoteAccentColor: String, CaseIterable, Identifiable {
+    case blue, purple, green, orange, pink, gray
+
+    var id: String { rawValue }
+
+    var label: String {
+        rawValue.capitalized
+    }
+
+    var color: Color {
+        switch self {
+        case .blue: return .blue
+        case .purple: return .purple
+        case .green: return .green
+        case .orange: return .orange
+        case .pink: return .pink
+        case .gray: return .gray
+        }
+    }
+
+    /// Background tint for odd rows in a list.
+    var alternateRowColor: Color {
+        color.opacity(0.15)
+    }
+
+    /// Subtler background tint for even rows in a list.
+    var baseRowColor: Color {
+        color.opacity(0.05)
     }
 }
 
@@ -36,11 +68,22 @@ final class NoteStore: ObservableObject {
         }
     }
 
+    /// Accent color used to tint alternating list rows. Persisted across launches.
+    @Published var accentColor: NoteAccentColor {
+        didSet {
+            UserDefaults.standard.set(accentColor.rawValue, forKey: Self.accentColorDefaultsKey)
+        }
+    }
+
     private static let fontSizeDefaultsKey = "NoteSweeker.fontSize"
+    private static let accentColorDefaultsKey = "NoteSweeker.accentColor"
 
     init() {
-        let stored = UserDefaults.standard.double(forKey: Self.fontSizeDefaultsKey)
-        fontSize = stored > 0 ? CGFloat(stored) : NoteFontSize.medium.rawValue
+        let storedFontSize = UserDefaults.standard.double(forKey: Self.fontSizeDefaultsKey)
+        fontSize = storedFontSize > 0 ? CGFloat(storedFontSize) : NoteFontSize.medium.rawValue
+
+        let storedColorName = UserDefaults.standard.string(forKey: Self.accentColorDefaultsKey)
+        accentColor = NoteAccentColor(rawValue: storedColorName ?? "") ?? .blue
     }
 
     // MARK: - Opening / creating files
