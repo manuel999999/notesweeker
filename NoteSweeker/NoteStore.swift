@@ -106,4 +106,38 @@ final class NoteStore: ObservableObject {
         noteGroups[index].contents.remove(atOffsets: offsets)
         save()
     }
+
+    // MARK: - Encryption
+
+    /// Encrypts a content value in place with the given password and persists the ciphertext.
+    func encryptContent(_ content: NoteContent, in group: NoteGroup, password: String) {
+        guard !password.isEmpty,
+              let groupIndex = noteGroups.firstIndex(where: { $0.id == group.id }),
+              let contentIndex = noteGroups[groupIndex].contents.firstIndex(where: { $0.id == content.id }),
+              !noteGroups[groupIndex].contents[contentIndex].isEncrypted else { return }
+
+        do {
+            let (ciphertext, salt) = try ContentCrypto.encrypt(
+                noteGroups[groupIndex].contents[contentIndex].value,
+                password: password
+            )
+            noteGroups[groupIndex].contents[contentIndex].value = ciphertext
+            noteGroups[groupIndex].contents[contentIndex].isEncrypted = true
+            noteGroups[groupIndex].contents[contentIndex].salt = salt
+            save()
+        } catch {
+            errorMessage = "Couldn't encrypt value: \(error.localizedDescription)"
+        }
+    }
+
+    /// Permanently replaces an encrypted content value with its already-decrypted plaintext and persists it.
+    func removeEncryption(from content: NoteContent, in group: NoteGroup, decryptedValue: String) {
+        guard let groupIndex = noteGroups.firstIndex(where: { $0.id == group.id }),
+              let contentIndex = noteGroups[groupIndex].contents.firstIndex(where: { $0.id == content.id }) else { return }
+
+        noteGroups[groupIndex].contents[contentIndex].value = decryptedValue
+        noteGroups[groupIndex].contents[contentIndex].isEncrypted = false
+        noteGroups[groupIndex].contents[contentIndex].salt = nil
+        save()
+    }
 }

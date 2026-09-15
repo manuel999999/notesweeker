@@ -12,6 +12,7 @@
 		4E58AF3DAB434B48AFEED07D /* NoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8914E525E6FE45C1B79E6A75 /* NoteStore.swift */; };
 		D50F2C2B35FF496DB7E9969D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233AFE37255940EE82717081 /* ContentView.swift */; };
 		8062EFD76DC74BF296350021 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E72A954C6024915B5E8A343 /* NoteDetailView.swift */; };
+		AC619DAB6FE840BD8D35A3C6 /* CryptoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D846F74D04C0EBDF33A48 /* CryptoService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		8914E525E6FE45C1B79E6A75 /* NoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteStore.swift; sourceTree = "<group>"; };
 		233AFE37255940EE82717081 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3E72A954C6024915B5E8A343 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
+		C77D846F74D04C0EBDF33A48 /* CryptoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoService.swift; sourceTree = "<group>"; };
 		110E5AC5BA0E453FB5A4601C /* NoteSweeker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NoteSweeker.entitlements; sourceTree = "<group>"; };
 		BDC602D1FB174FCB9A5C27B6 /* NoteSweeker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteSweeker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -59,6 +61,7 @@
 				8914E525E6FE45C1B79E6A75 /* NoteStore.swift */,
 				233AFE37255940EE82717081 /* ContentView.swift */,
 				3E72A954C6024915B5E8A343 /* NoteDetailView.swift */,
+				C77D846F74D04C0EBDF33A48 /* CryptoService.swift */,
 				110E5AC5BA0E453FB5A4601C /* NoteSweeker.entitlements */,
 			);
 			path = NoteSweeker;
@@ -137,6 +140,7 @@
 				4E58AF3DAB434B48AFEED07D /* NoteStore.swift in Sources */,
 				D50F2C2B35FF496DB7E9969D /* ContentView.swift in Sources */,
 				8062EFD76DC74BF296350021 /* NoteDetailView.swift in Sources */,
+				AC619DAB6FE840BD8D35A3C6 /* CryptoService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
