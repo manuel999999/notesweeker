@@ -72,6 +72,7 @@ struct NoteDetailView: View {
             if content.isEncrypted {
                 if let plain = unlockedValues[content.id] {
                     Text(plain)
+                        .font(.system(size: store.fontSize))
                     Spacer()
                     Button {
                         copyToPasteboard(plain)
@@ -93,12 +94,14 @@ struct NoteDetailView: View {
                     Image(systemName: "lock.fill")
                         .foregroundStyle(.secondary)
                     Text("Encrypted")
+                        .font(.system(size: store.fontSize))
                         .foregroundStyle(.secondary)
                         .italic()
                     Spacer()
                 }
             } else {
                 Text(content.value)
+                    .font(.system(size: store.fontSize))
                 Spacer()
                 Button {
                     copyToPasteboard(content.value)

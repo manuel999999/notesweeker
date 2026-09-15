@@ -1,6 +1,24 @@
 import AppKit
 import Foundation
 
+enum NoteFontSize: CGFloat, CaseIterable, Identifiable {
+    case small = 12
+    case medium = 14
+    case large = 17
+    case extraLarge = 20
+
+    var id: CGFloat { rawValue }
+
+    var label: String {
+        switch self {
+        case .small: return "Small"
+        case .medium: return "Medium"
+        case .large: return "Large"
+        case .extraLarge: return "Extra Large"
+        }
+    }
+}
+
 @MainActor
 final class NoteStore: ObservableObject {
     @Published var noteGroups: [NoteGroup] = []
@@ -10,6 +28,20 @@ final class NoteStore: ObservableObject {
     /// Session-only password used to encrypt new values and to auto-decrypt
     /// encrypted content when a note is opened. Never persisted to disk.
     @Published var password: String = ""
+
+    /// Text size used for note names and content values. Persisted across launches.
+    @Published var fontSize: CGFloat {
+        didSet {
+            UserDefaults.standard.set(fontSize, forKey: Self.fontSizeDefaultsKey)
+        }
+    }
+
+    private static let fontSizeDefaultsKey = "NoteSweeker.fontSize"
+
+    init() {
+        let stored = UserDefaults.standard.double(forKey: Self.fontSizeDefaultsKey)
+        fontSize = stored > 0 ? CGFloat(stored) : NoteFontSize.medium.rawValue
+    }
 
     // MARK: - Opening / creating files
 

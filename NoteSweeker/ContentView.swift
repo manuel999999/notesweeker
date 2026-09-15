@@ -33,6 +33,22 @@ struct ContentView: View {
                             isPresentingAddAlert = true
                         }
                     }
+                    Menu {
+                        ForEach(NoteFontSize.allCases) { size in
+                            Button {
+                                store.fontSize = size.rawValue
+                            } label: {
+                                if store.fontSize == size.rawValue {
+                                    Label(size.label, systemImage: "checkmark")
+                                } else {
+                                    Text(size.label)
+                                }
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "textformat.size")
+                    }
+                    .help("Font Size")
                 }
             }
             .alert("New Note", isPresented: $isPresentingAddAlert) {
@@ -86,8 +102,10 @@ struct ContentView: View {
                     } label: {
                         HStack {
                             Text(group.noteName)
+                                .font(.system(size: store.fontSize))
                             Spacer()
                             Text("\(group.contents.count)")
+                                .font(.system(size: store.fontSize))
                                 .foregroundStyle(.secondary)
                         }
                         .contentShape(Rectangle())
