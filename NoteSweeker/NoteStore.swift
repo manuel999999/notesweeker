@@ -7,6 +7,10 @@ final class NoteStore: ObservableObject {
     @Published private(set) var fileURL: URL?
     @Published var errorMessage: String?
 
+    /// Session-only password used to encrypt new values and to auto-decrypt
+    /// encrypted content when a note is opened. Never persisted to disk.
+    @Published var password: String = ""
+
     // MARK: - Opening / creating files
 
     func openFile() {

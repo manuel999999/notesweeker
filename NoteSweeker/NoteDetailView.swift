@@ -9,17 +9,9 @@ struct NoteDetailView: View {
 
     @State private var newValue = ""
 
-    /// Password entered in the unlock bar, used to attempt decrypting every encrypted
-    /// content item in this note independently.
-    @State private var unlockPassword = ""
-
     /// Session-only cache of successfully decrypted plaintext, keyed by content id.
     /// Never written back to the store or disk unless the user removes encryption.
     @State private var unlockedValues: [NoteContent.ID: String] = [:]
-
-    @State private var contentToEncrypt: NoteContent?
-    @State private var encryptPassword = ""
-    @State private var isPresentingEncryptAlert = false
 
     private var group: NoteGroup? {
         store.noteGroups.first { $0.id == groupID }
@@ -33,10 +25,6 @@ struct NoteDetailView: View {
                         ForEach(group.contents) { content in
                             row(for: content, in: group)
                         }
-                    }
-
-                    if group.contents.contains(where: { $0.isEncrypted }) {
-                        unlockBar
                     }
 
                     Divider()
@@ -57,24 +45,25 @@ struct NoteDetailView: View {
             }
             .navigationTitle(group?.noteName ?? "Note")
             .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        unlockedValues.removeAll()
+                    } label: {
+                        Image(systemName: "lock")
+                    }
+                    .help("Hide decrypted values")
+                    .disabled(unlockedValues.isEmpty)
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") { dismiss() }
                 }
             }
-            .alert("Encrypt Value", isPresented: $isPresentingEncryptAlert) {
-                SecureField("Password", text: $encryptPassword)
-                Button("Cancel", role: .cancel) {
-                    contentToEncrypt = nil
-                }
-                Button("Encrypt") {
-                    encryptPendingContent()
-                }
-                .disabled(encryptPassword.isEmpty)
-            } message: {
-                Text("This value will be encrypted with this password. You'll need the same password to view it again.")
-            }
         }
         .frame(minWidth: 460, minHeight: 460)
+        .onAppear(perform: unlockWithStoredPassword)
+        .onChange(of: store.password) {
+            unlockWithStoredPassword()
+        }
     }
 
     @ViewBuilder
@@ -120,14 +109,17 @@ struct NoteDetailView: View {
                 .help("Copy to clipboard")
 
                 Button {
-                    contentToEncrypt = content
-                    encryptPassword = ""
-                    isPresentingEncryptAlert = true
+                    store.encryptContent(content, in: group, password: store.password)
                 } label: {
                     Image(systemName: "lock")
                 }
                 .buttonStyle(.plain)
-                .help("Encrypt this value")
+                .disabled(store.password.isEmpty)
+                .help(
+                    store.password.isEmpty
+                        ? "Enter a password in the main window first"
+                        : "Encrypt this value"
+                )
             }
 
             Button(role: .destructive) {
@@ -141,37 +133,14 @@ struct NoteDetailView: View {
         }
     }
 
-    private var unlockBar: some View {
-        HStack {
-            SecureField("Password to unlock encrypted values", text: $unlockPassword)
-                .textFieldStyle(.roundedBorder)
-                .onSubmit(unlock)
-            Button("Unlock", action: unlock)
-                .disabled(unlockPassword.isEmpty)
-            if !unlockedValues.isEmpty {
-                Button("Lock") {
-                    unlockedValues.removeAll()
-                }
-            }
-        }
-        .padding([.horizontal, .top])
-    }
-
-    private func unlock() {
-        guard let group else { return }
+    private func unlockWithStoredPassword() {
+        guard let group, !store.password.isEmpty else { return }
         for content in group.contents where content.isEncrypted {
             guard let salt = content.salt else { continue }
-            if let plaintext = try? ContentCrypto.decrypt(content.value, saltBase64: salt, password: unlockPassword) {
+            if let plaintext = try? ContentCrypto.decrypt(content.value, saltBase64: salt, password: store.password) {
                 unlockedValues[content.id] = plaintext
             }
         }
-    }
-
-    private func encryptPendingContent() {
-        guard let content = contentToEncrypt, let group else { return }
-        store.encryptContent(content, in: group, password: encryptPassword)
-        contentToEncrypt = nil
-        encryptPassword = ""
     }
 
     private func addValue() {

@@ -9,11 +9,13 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
+            VStack(spacing: 0) {
                 if store.fileURL == nil {
                     emptyStateView
                 } else {
                     listView
+                    Divider()
+                    passwordBar
                 }
             }
             .navigationTitle(store.fileURL?.deletingPathExtension().lastPathComponent ?? "NoteSweeker")
@@ -102,6 +104,16 @@ struct ContentView: View {
                 }
             }
         }
+    }
+
+    private var passwordBar: some View {
+        HStack {
+            Image(systemName: "lock")
+                .foregroundStyle(.secondary)
+            SecureField("Password for encrypted values", text: $store.password)
+                .textFieldStyle(.roundedBorder)
+        }
+        .padding()
     }
 
     private var errorBinding: Binding<Bool> {
