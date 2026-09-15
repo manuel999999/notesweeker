@@ -13,6 +13,7 @@
 		D50F2C2B35FF496DB7E9969D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233AFE37255940EE82717081 /* ContentView.swift */; };
 		8062EFD76DC74BF296350021 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E72A954C6024915B5E8A343 /* NoteDetailView.swift */; };
 		AC619DAB6FE840BD8D35A3C6 /* CryptoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77D846F74D04C0EBDF33A48 /* CryptoService.swift */; };
+		DEE7A5A854914275A20B1D9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 863AEADEB9E848439F358852 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		233AFE37255940EE82717081 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3E72A954C6024915B5E8A343 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
 		C77D846F74D04C0EBDF33A48 /* CryptoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoService.swift; sourceTree = "<group>"; };
+		863AEADEB9E848439F358852 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		110E5AC5BA0E453FB5A4601C /* NoteSweeker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NoteSweeker.entitlements; sourceTree = "<group>"; };
 		BDC602D1FB174FCB9A5C27B6 /* NoteSweeker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteSweeker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -62,6 +64,7 @@
 				233AFE37255940EE82717081 /* ContentView.swift */,
 				3E72A954C6024915B5E8A343 /* NoteDetailView.swift */,
 				C77D846F74D04C0EBDF33A48 /* CryptoService.swift */,
+				863AEADEB9E848439F358852 /* Assets.xcassets */,
 				110E5AC5BA0E453FB5A4601C /* NoteSweeker.entitlements */,
 			);
 			path = NoteSweeker;
@@ -125,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEE7A5A854914275A20B1D9B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +266,7 @@
 		ACB0010012FD47AD9AEABA46 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
 				CODE_SIGN_ENTITLEMENTS = NoteSweeker/NoteSweeker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -289,6 +294,7 @@
 		2077BA9FAAD6464CBB711D47 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
 				CODE_SIGN_ENTITLEMENTS = NoteSweeker/NoteSweeker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
