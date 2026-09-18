@@ -101,6 +101,9 @@ struct ContentView: View {
             HStack {
                 Button("Open File") { store.openFile() }
                 Button("New File") { store.newFile() }
+                if store.hasLastFile {
+                    Button("Open Last File") { store.openLastFile() }
+                }
             }
             .padding(.top, 8)
         }

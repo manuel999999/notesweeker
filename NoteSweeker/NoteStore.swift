@@ -77,6 +77,12 @@ final class NoteStore: ObservableObject {
 
     private static let fontSizeDefaultsKey = "NoteSweeker.fontSize"
     private static let accentColorDefaultsKey = "NoteSweeker.accentColor"
+    private static let lastFileBookmarkDefaultsKey = "NoteSweeker.lastFileBookmark"
+
+    /// Whether a previously opened file is available to reopen via `openLastFile()`.
+    var hasLastFile: Bool {
+        UserDefaults.standard.data(forKey: Self.lastFileBookmarkDefaultsKey) != nil
+    }
 
     init() {
         let storedFontSize = UserDefaults.standard.double(forKey: Self.fontSizeDefaultsKey)
@@ -97,7 +103,36 @@ final class NoteStore: ObservableObject {
         panel.message = "Choose a notes JSON file to open"
 
         guard panel.runModal() == .OK, let url = panel.url else { return }
+        saveBookmark(for: url)
         load(from: url)
+    }
+
+    /// Reopens the most recently opened file, if one was recorded.
+    func openLastFile() {
+        guard let bookmarkData = UserDefaults.standard.data(forKey: Self.lastFileBookmarkDefaultsKey) else { return }
+
+        do {
+            var isStale = false
+            let url = try URL(
+                resolvingBookmarkData: bookmarkData,
+                options: [.withSecurityScope],
+                relativeTo: nil,
+                bookmarkDataIsStale: &isStale
+            )
+
+            guard url.startAccessingSecurityScopedResource() else {
+                errorMessage = "Couldn't reopen the last file."
+                return
+            }
+            defer { url.stopAccessingSecurityScopedResource() }
+
+            if isStale {
+                saveBookmark(for: url)
+            }
+            load(from: url)
+        } catch {
+            errorMessage = "Couldn't reopen the last file: \(error.localizedDescription)"
+        }
     }
 
     func newFile() {
@@ -110,10 +145,24 @@ final class NoteStore: ObservableObject {
 
         do {
             try write([], to: url)
+            saveBookmark(for: url)
             fileURL = url
             noteGroups = []
         } catch {
             errorMessage = "Couldn't create file: \(error.localizedDescription)"
+        }
+    }
+
+    private func saveBookmark(for url: URL) {
+        do {
+            let bookmarkData = try url.bookmarkData(
+                options: .withSecurityScope,
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
+            UserDefaults.standard.set(bookmarkData, forKey: Self.lastFileBookmarkDefaultsKey)
+        } catch {
+            // Non-fatal: "Open Last File" just won't be available next launch.
         }
     }
 
