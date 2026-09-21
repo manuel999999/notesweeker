@@ -79,6 +79,14 @@ final class NoteStore: ObservableObject {
     private static let accentColorDefaultsKey = "NoteSweeker.accentColor"
     private static let lastFileBookmarkDefaultsKey = "NoteSweeker.lastFileBookmark"
 
+    /// URL whose security-scoped access is held open so saves keep working while the file is open.
+    private var scopedURL: URL?
+
+    private func releaseScopedAccess() {
+        scopedURL?.stopAccessingSecurityScopedResource()
+        scopedURL = nil
+    }
+
     /// Whether a previously opened file is available to reopen via `openLastFile()`.
     var hasLastFile: Bool {
         UserDefaults.standard.data(forKey: Self.lastFileBookmarkDefaultsKey) != nil
@@ -103,6 +111,7 @@ final class NoteStore: ObservableObject {
         panel.message = "Choose a notes JSON file to open"
 
         guard panel.runModal() == .OK, let url = panel.url else { return }
+        releaseScopedAccess()
         saveBookmark(for: url)
         load(from: url)
     }
@@ -124,11 +133,12 @@ final class NoteStore: ObservableObject {
                 errorMessage = "Couldn't reopen the last file."
                 return
             }
-            defer { url.stopAccessingSecurityScopedResource() }
 
             if isStale {
                 saveBookmark(for: url)
             }
+            releaseScopedAccess()
+            scopedURL = url
             load(from: url)
         } catch {
             errorMessage = "Couldn't reopen the last file: \(error.localizedDescription)"
@@ -145,6 +155,7 @@ final class NoteStore: ObservableObject {
 
         do {
             try write([], to: url)
+            releaseScopedAccess()
             saveBookmark(for: url)
             fileURL = url
             noteGroups = []
