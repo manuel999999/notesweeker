@@ -9,6 +9,9 @@
       },
       {
         "value" : "SHAPES_URP\nMELCHER_CORE_USE_TEXTCORE"
+      },
+      {
+        "value" : "https:\/\/groups.google.com\/g\/geminizer67\/members"
       }
     ],
     "noteName" : "hehe"
@@ -80,5 +83,51 @@
       }
     ],
     "noteName" : "Apps"
+  },
+  {
+    "contents" : [
+      {
+        "value" : "https:\/\/kitchfit-studio-ai-kitchen-site-blender-1.ai.studio"
+      },
+      {
+        "value" : "https:\/\/aistudio.google.com\/u\/3\/billing?billing=01678B-00AD1B-6CCEC4&project=gen-lang-client-0104642573"
+      },
+      {
+        "value" : "https:\/\/aistudio.google.com\/u\/3\/apps\/79fff0de-4765-4220-a160-470ba3f5ae20?showPreview=true&showAssistant=true&project=gen-lang-client-0225098465"
+      }
+    ],
+    "noteName" : "Kitchen FIt"
+  },
+  {
+    "contents" : [
+      {
+        "value" : "https:\/\/animesogo.to\/watch\/nia-liston-the-merciless-maiden-xyvjt"
+      }
+    ],
+    "noteName" : "Tuesday Anime"
+  },
+  {
+    "contents" : [
+      {
+        "value" : "https:\/\/animesogo.to\/watch\/reborn-as-a-space-mercenary-i-woke-up-piloting-the-strongest-starship-dh4am"
+      }
+    ],
+    "noteName" : "Sunday Anime"
+  },
+  {
+    "contents" : [
+      {
+        "value" : "https:\/\/admin.shopify.com\/store\/hybqzc-tn"
+      },
+      {
+        "value" : "irena@profitoutdoorliving.com"
+      },
+      {
+        "encrypted" : true,
+        "salt" : "poTCXh8b98clchTiuCAvjA==",
+        "value" : "UOus\/1bRlJPQr1sypogQJSM91cgCkC0xWP1srGHIeK2yL2yBjcK4"
+      }
+    ],
+    "noteName" : "Shopify"
   }
 ]
